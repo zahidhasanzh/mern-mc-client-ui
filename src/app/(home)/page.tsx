@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 
 export default function Home() {
@@ -8,7 +9,7 @@ export default function Home() {
         <div className="container flex items-center justify-between py-24">
           <div>
             <h1 className="text-7xl font-black font-sans leading-20">
-              Super Delicious Pizza in <br/>
+              Super Delicious Pizza in <br />
               <span className="text-primary">Only 45 Minutes!</span>
             </h1>
             <p className="text-2xl mt-8 max-w-lg leading-snug">
@@ -26,6 +27,23 @@ export default function Home() {
               height={400}
             />
           </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="container py-12">
+          <Tabs defaultValue="account" className="w-[400px]">
+            <TabsList>
+              <TabsTrigger value="pizza" className="text-md">
+                Pizza
+              </TabsTrigger>
+              <TabsTrigger value="beverages" className="text-md">
+                Beverages
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="pizza">pizza list</TabsContent>
+            <TabsContent value="beverages">beverages list</TabsContent>
+          </Tabs>
         </div>
       </section>
     </>
