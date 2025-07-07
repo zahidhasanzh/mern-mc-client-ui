@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 import {
   Card,
-  CardAction,
   CardContent,
   CardFooter,
   CardHeader,
@@ -10,15 +9,13 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { Button } from "@/components/ui/button";
+
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import ToppingList from "./topping-list";
 
 export type Product = {
   id: string;
@@ -163,6 +160,8 @@ const ProductCard = ({ product }: PropTypes) => {
                     </div>
                   </RadioGroup>
                 </div>
+
+                <ToppingList/>
               </div>
             </div>
           </DialogContent>
