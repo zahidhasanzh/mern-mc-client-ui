@@ -13,7 +13,7 @@ import { Button } from "../ui/button";
 const Header = () => {
   return (
     <header className="bg-white">
-      <nav className="py-5 container max-w-7xl mx-auto px-4 flex items-center justify-between">
+      <nav className="py-5 container flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <svg
             width="90"

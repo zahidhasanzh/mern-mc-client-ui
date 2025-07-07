@@ -44,7 +44,7 @@
 
 :root {
   --radius: 0.65rem;
- --background: oklch(0.9808 0.0096 31.09);
+  --background: oklch(0.9808 0.0096 31.09);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
@@ -111,12 +111,19 @@
   --sidebar-ring: oklch(0.646 0.222 41.116);
 }
 
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground font-manrope;
+  }
+  .container {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem; 
+    padding-right: 1rem;
+    width: 100%;
   }
 }
