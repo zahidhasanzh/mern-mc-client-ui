@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main>
       <h1>Welcome to pizza shop</h1>
-      <Button variant="outline">Click</Button>
+      <Button>Click</Button>
     </main>
   );
 }
