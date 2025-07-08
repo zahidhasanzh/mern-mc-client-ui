@@ -1,63 +1,29 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
-import ProductCard, { Product } from "./components/product-card";
-import { Category } from "@/lib/types";
-
-const products: Product[] = [
-  {
-    id: "1",
-    name: "Margrita Pizza",
-    description: "This is a very tasty pizza",
-    image: "/pizza-main.png",
-    price: 50,
-  },
-  {
-    id: "2",
-    name: "Margrita Pizza",
-    description: "This is a very tasty pizza",
-    image: "/pizza-main.png",
-    price: 50,
-  },
-  {
-    id: "3",
-    name: "Margrita Pizza",
-    description: "This is a very tasty pizza",
-    image: "/pizza-main.png",
-    price: 50,
-  },
-  {
-    id: "4",
-    name: "Margrita Pizza",
-    description: "This is a very tasty pizza",
-    image: "/pizza-main.png",
-    price: 50,
-  },
-  {
-    id: "5",
-    name: "Margrita Pizza",
-    description: "This is a very tasty pizza",
-    image: "/pizza-main.png",
-    price: 50,
-  },
-];
+import ProductCard from "./components/product-card";
+import { Category, Product } from "@/lib/types";
 
 export default async function Home() {
-  const categoryResponse = await fetch(
-    `${process.env.BACKEND_URL}/api/catalog/categories`,
-    {
-      next: {
-        revalidate: 3600, // 1 hour
-      },
-    }
-  );
+  const [categoryResponse, productResponse] = await Promise.all([
+    fetch(`${process.env.BACKEND_URL}/api/catalog/categories`, {
+      next: { revalidate: 3600 },
+    }),
+    fetch(
+      `${process.env.BACKEND_URL}/api/catalog/products?Perpage=100&tenantId=`,
+      {
+        next: { revalidate: 3600 },
+      }
+    ),
+  ]);
 
-  if (!categoryResponse.ok) {
-    throw new Error("Faield to fetch categories");
+  if (!categoryResponse.ok || !productResponse.ok) {
+    throw new Error("Failed to fetch data");
   }
 
   const categories: Category[] = await categoryResponse.json();
-  console.log(categories);
+  const products: { data: Product[] } = await productResponse.json();
+
   return (
     <>
       <section className="bg-white">
@@ -87,11 +53,15 @@ export default async function Home() {
 
       <section>
         <div className="container py-12">
-          <Tabs defaultValue="pizza">
+          <Tabs defaultValue={categories[0]._id}>
             <TabsList>
               {categories.map((category) => (
-                <TabsTrigger key={category._id} value={category._id} className="text-md">
-                   {category.name}
+                <TabsTrigger
+                  key={category._id}
+                  value={category._id}
+                  className="text-md"
+                >
+                  {category.name}
                 </TabsTrigger>
               ))}
 
@@ -99,20 +69,25 @@ export default async function Home() {
                 Beverages
               </TabsTrigger> */}
             </TabsList>
-            <TabsContent value="pizza">
+            {categories.map((category) => (
+              <TabsContent key={category._id} value={category._id}>
+                <div className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 mt-6">
+                  {products.data
+                    .filter((product) => product.category._id === category._id)
+                    .map((product) => (
+                      <ProductCard product={product} key={product._id} />
+                    ))}
+                </div>
+              </TabsContent>
+            ))}
+
+            {/* <TabsContent value="beverages">
               <div className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 mt-6">
                 {products.map((product) => (
                   <ProductCard product={product} key={product.id} />
                 ))}
               </div>
-            </TabsContent>
-            <TabsContent value="beverages">
-              <div className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 mt-6">
-                {products.map((product) => (
-                  <ProductCard product={product} key={product.id} />
-                ))}
-              </div>
-            </TabsContent>
+            </TabsContent> */}
           </Tabs>
         </div>
       </section>
