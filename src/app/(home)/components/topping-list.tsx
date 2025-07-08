@@ -1,4 +1,4 @@
-import React, { startTransition, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ToppingCard from "./topping-card";
 import { Topping } from "@/lib/types";
 
@@ -26,11 +26,11 @@ import { Topping } from "@/lib/types";
 //   },
 // ];
 
-const ToppingList = () => {
+const ToppingList = ({handleCheckBoxCheck, selectedToppings }: {selectedToppings: Topping[], handleCheckBoxCheck: (topping: Topping) => void }) => {
   const [toppings, setToppings] = useState<Topping[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const toppingResponse = await fetch(
+      const toppingResponse = await fetch( 
         //todo: make tenantId dynamic
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/catalog/toppings?tenantId=2`
       );
@@ -41,24 +41,7 @@ const ToppingList = () => {
     fetchData();
   }, []);
 
-  const [selectedToppings, setSelectedToppings] = useState<Topping[]>([]);
 
-  const handleCheckBoxCheck = (topping: Topping) => {
-    const isAllreadyExists = selectedToppings.some(
-      (element: Topping) => element.id === topping.id
-    );
-
-    startTransition(() => {
-      if (isAllreadyExists) {
-        setSelectedToppings((prev) =>
-          prev.filter((elm: Topping) => elm.id !== topping.id)
-        );
-        return;
-      }
-
-      setSelectedToppings((prev: Topping[]) => [...prev, topping]);
-    });
-  };
 
   return (
     <section className="mt-6">
