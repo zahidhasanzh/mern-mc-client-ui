@@ -7,9 +7,10 @@ import {
   SelectValue,
 } from "../ui/select";
 import Link from "next/link";
-import { Phone, ShoppingBasket } from "lucide-react";
+import { Phone } from "lucide-react";
 import { Button } from "../ui/button";
 import { Tenant } from "@/lib/types";
+import CartCounter from "./cart-counter";
 
 const Header = async () => {
   const tenantsResponse = await fetch(
@@ -20,10 +21,10 @@ const Header = async () => {
       },
     }
   );
-  if(!tenantsResponse.ok){
-    throw new Error('Failed to fetch tenants')
+  if (!tenantsResponse.ok) {
+    throw new Error("Failed to fetch tenants");
   }
-  const restaurants: {data: Tenant[]} = await tenantsResponse.json();
+  const restaurants: { data: Tenant[] } = await tenantsResponse.json();
 
   return (
     <header className="bg-white">
@@ -56,10 +57,9 @@ const Header = async () => {
             <SelectContent>
               {restaurants.data.map((restaurant) => (
                 <SelectItem value="restaurant.id" key={restaurant.id}>
-                   {restaurant.name}
+                  {restaurant.name}
                 </SelectItem>
               ))}
-      
             </SelectContent>
           </Select>
         </div>
@@ -76,14 +76,7 @@ const Header = async () => {
               </Link>
             </li>
           </ul>
-          <div className="relative">
-            <Link href={"/cart"}>
-              <ShoppingBasket className="hover:text-primary" />
-            </Link>
-            <span className="absolute -top-4 -right-5 h-6 w-6 flex justify-center rounded-full bg-primary font-bold text-white">
-              3
-            </span>
-          </div>
+          <CartCounter />
           <div className="flex items-center gap-x-2 ml-12">
             <Phone />
             <span>+01710000000</span>
