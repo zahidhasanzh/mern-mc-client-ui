@@ -6,16 +6,13 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import ToppingList from "./topping-list";
+import { ShoppingCart } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export type Product = {
   id: string;
@@ -45,7 +42,7 @@ const ProductCard = ({ product }: PropTypes) => {
       <CardFooter className="flex items-center justify-between mt-4">
         <p>
           <span>From</span>
-          <span className="font-bold">${product.price}</span>
+          <span className="font-bold ml-1">${product.price}</span>
         </p>
 
         <Dialog>
@@ -140,7 +137,7 @@ const ProductCard = ({ product }: PropTypes) => {
                         htmlFor="thin"
                         className="flex flex-col items-center justify-between rounded-md border-2  bg-white p-3 hover:bg-accent hover:text-accent-foreground-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                       >
-                       Thin
+                        Thin
                       </Label>
                     </div>
                     <div>
@@ -161,7 +158,15 @@ const ProductCard = ({ product }: PropTypes) => {
                   </RadioGroup>
                 </div>
 
-                <ToppingList/>
+                <ToppingList />
+
+                <div className="flex items-center justify-between mt-12">
+                  <span className="font-bold">$80</span>
+                  <Button>
+                    <ShoppingCart size={20}/>
+                    <span className="ml-2">Add to cart</span>
+                  </Button>
+                </div>
               </div>
             </div>
           </DialogContent>
