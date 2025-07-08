@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { startTransition, Suspense, useState } from "react";
 import Image from "next/image";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -10,10 +10,24 @@ import { ShoppingCart } from "lucide-react";
 import ToppingList from "./topping-list";
 import { Product } from "@/lib/types";
 
+type ChosenConfig = {
+  [key: string]: string;
+};
+
 const ProductModel = ({ product }: { product: Product }) => {
+  const [chosenConfig, setChosenConfig] = useState<ChosenConfig>();
   const handleAddToCart = () => {
     console.log("adding add to cart...");
   };
+
+  const handleRadioChange = (key: string, data: string) => {
+    startTransition(() => {
+      setChosenConfig((prev) => {
+        return { ...prev, [key]: data };
+      });
+    });
+  };
+
   return (
     <Dialog>
       <DialogTrigger className="bg-orange-200 hover:bg-orange-300 text-orange-500 px-6 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150">
@@ -40,6 +54,9 @@ const ProductModel = ({ product }: { product: Product }) => {
                   <h4 className="mt-6">Choose the {key}</h4>
                   <RadioGroup
                     defaultValue={value.availableOptions[0]}
+                    onValueChange={(data) => {
+                      handleRadioChange(key, data);
+                    }}
                     className="grid grid-cols-3 gap-3 mt-2"
                   >
                     {value.availableOptions.map((option) => (
@@ -63,7 +80,7 @@ const ProductModel = ({ product }: { product: Product }) => {
                 </div>
               )
             )}
-            <Suspense fallback={'Topping loading'}>
+            <Suspense fallback={"Topping loading"}>
               <ToppingList />
             </Suspense>
 
