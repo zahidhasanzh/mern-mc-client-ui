@@ -17,32 +17,37 @@ type ChosenConfig = {
 };
 
 const ProductModel = ({ product }: { product: Product }) => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
-  const defaultConfiguration = Object.entries(product.category.priceConfiguration).map(([key, value]) => {
-    return {[key]: value.availableOptions[0]}
-  }).reduce((acc, curr) => ({...acc, ...curr}), {})
+  const defaultConfiguration = Object.entries(
+    product.category.priceConfiguration
+  )
+    .map(([key, value]) => {
+      return { [key]: value.availableOptions[0] };
+    })
+    .reduce((acc, curr) => ({ ...acc, ...curr }), {});
 
-
-  
-  const [chosenConfig, setChosenConfig] = useState<ChosenConfig>(defaultConfiguration as unknown as ChosenConfig);
+  const [chosenConfig, setChosenConfig] = useState<ChosenConfig>(
+    defaultConfiguration as unknown as ChosenConfig
+  );
   const [selectedToppings, setSelectedToppings] = useState<Topping[]>([]);
 
   const totalPrice = useMemo(() => {
-      const toppingsTotal = selectedToppings.reduce((acc, curr) => acc + curr.price, 0);
+    const toppingsTotal = selectedToppings.reduce(
+      (acc, curr) => acc + curr.price,
+      0
+    );
 
-     
-      const configPricing = Object.entries(chosenConfig).reduce((acc, [key, value]: [string, string]) => {
-          const price = product.priceConfiguration[key].availableOptions[value]
-          console.log(price, acc);
-          return acc + price
-      }, 0)
-    
-      return configPricing + toppingsTotal;
-     
-  }, [selectedToppings, chosenConfig, product] )
+    const configPricing = Object.entries(chosenConfig).reduce(
+      (acc, [key, value]: [string, string]) => {
+        const price = product.priceConfiguration[key].availableOptions[value];
+        return acc + price;
+      },
+      0
+    );
 
-
+    return configPricing + toppingsTotal;
+  }, [selectedToppings, chosenConfig, product]);
 
   const handleCheckBoxCheck = (topping: Topping) => {
     const isAllreadyExists = selectedToppings.some(
@@ -62,15 +67,14 @@ const ProductModel = ({ product }: { product: Product }) => {
   };
 
   const handleAddToCart = (product: Product) => {
-    console.log("adding add to cart...");
     const itemToAdd = {
-       product,
-       chosenConfiguration: {
-         priceConfiguration: chosenConfig!,
-         selectedToppings: selectedToppings
-       }
-    }
-    dispatch(addToCart(itemToAdd))
+      product,
+      chosenConfiguration: {
+        priceConfiguration: chosenConfig!,
+        selectedToppings: selectedToppings,
+      },
+    };
+    dispatch(addToCart(itemToAdd));
   };
 
   const handleRadioChange = (key: string, data: string) => {
@@ -80,6 +84,8 @@ const ProductModel = ({ product }: { product: Product }) => {
       });
     });
   };
+
+  console.log(product.category.hasTopping);
 
   return (
     <Dialog>
@@ -133,9 +139,15 @@ const ProductModel = ({ product }: { product: Product }) => {
                 </div>
               )
             )}
-            <Suspense fallback={"Topping loading"}>
-              <ToppingList selectedToppings={selectedToppings} handleCheckBoxCheck={handleCheckBoxCheck}/>
-            </Suspense>
+
+            {product.category.hasTopping  && (
+              <Suspense fallback={"Topping loading"}>
+                <ToppingList
+                  selectedToppings={selectedToppings}
+                  handleCheckBoxCheck={handleCheckBoxCheck}
+                />
+              </Suspense>
+            )}
 
             <div className="flex items-center justify-between mt-12">
               <span className="font-bold">${totalPrice}</span>
