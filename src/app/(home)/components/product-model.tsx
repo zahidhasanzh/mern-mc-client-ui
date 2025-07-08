@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import Image from "next/image";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -63,8 +63,9 @@ const ProductModel = ({ product }: { product: Product }) => {
                 </div>
               )
             )}
-
-            <ToppingList />
+            <Suspense fallback={'Topping loading'}>
+              <ToppingList />
+            </Suspense>
 
             <div className="flex items-center justify-between mt-12">
               <span className="font-bold">$80</span>

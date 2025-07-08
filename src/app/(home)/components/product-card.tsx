@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "next/image";
 import {
   Card,
@@ -6,7 +5,6 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-
 
 import { Product } from "@/lib/types";
 import ProductModel from "./product-model";
@@ -33,7 +31,9 @@ const ProductCard = ({ product }: PropTypes) => {
           <span className="font-bold ml-1">${50}</span>
         </p>
 
-       <ProductModel product={product}/>
+   
+          <ProductModel product={product} />
+   
       </CardFooter>
     </Card>
   );
