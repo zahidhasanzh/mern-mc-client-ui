@@ -51,7 +51,7 @@ const ProductCard = ({ product }: PropTypes) => {
             {" "}
             Choose
           </DialogTrigger>
-          <DialogContent className="max-w-3xl p-0 ">
+          <DialogContent className="w-full !max-w-3xl  p-0 ">
             <div className="flex">
               <div className="w-1/3 bg-white rounded p-8 flex items-center justify-center">
                 <Image
