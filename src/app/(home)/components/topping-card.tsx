@@ -1,17 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Topping } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { CircleCheck } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
-export type Topping = {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  isAvailable: boolean;
-};
 type PropType = {
   topping: Topping;
   selectedToppings: Topping[];
@@ -31,7 +25,7 @@ const ToppingCard = ({
       onClick={() => handleCheckBoxCheck(topping)}
       variant={"outline"}
       className={cn(
-        "flex flex-col h-42 relative",
+        "flex flex-col gap-0 h-34 relative",
         isCurrentSelected ? "border-primary" : ""
       )}
     >

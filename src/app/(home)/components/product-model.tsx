@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react";
 import Image from "next/image";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -9,6 +11,9 @@ import ToppingList from "./topping-list";
 import { Product } from "@/lib/types";
 
 const ProductModel = ({ product }: { product: Product }) => {
+  const handleAddToCart = () => {
+    console.log("adding add to cart...");
+  };
   return (
     <Dialog>
       <DialogTrigger className="bg-orange-200 hover:bg-orange-300 text-orange-500 px-6 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150">
@@ -50,11 +55,10 @@ const ProductModel = ({ product }: { product: Product }) => {
                           htmlFor={option}
                           className="flex flex-col items-center justify-between rounded-md border-2  bg-white p-3 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                         >
-                         {option}
+                          {option}
                         </Label>
                       </div>
                     ))}
-
                   </RadioGroup>
                 </div>
               )
@@ -64,7 +68,7 @@ const ProductModel = ({ product }: { product: Product }) => {
 
             <div className="flex items-center justify-between mt-12">
               <span className="font-bold">$80</span>
-              <Button>
+              <Button onClick={handleAddToCart}>
                 <ShoppingCart size={20} />
                 <span className="ml-2">Add to cart</span>
               </Button>
