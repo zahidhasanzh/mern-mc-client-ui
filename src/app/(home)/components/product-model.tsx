@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
+import { Key, ShoppingCart } from "lucide-react";
 import ToppingList from "./topping-list";
 import { Product, Topping } from "@/lib/types";
 import { useAppDispatch } from "@/lib/store/hooks";
@@ -18,7 +18,14 @@ type ChosenConfig = {
 
 const ProductModel = ({ product }: { product: Product }) => {
   const dispatch = useAppDispatch()
-  const [chosenConfig, setChosenConfig] = useState<ChosenConfig>();
+
+  const defaultConfiguration = Object.entries(product.category.priceConfiguration).map(([key, value]) => {
+    return {[key]: value.availableOptions[0]}
+  }).reduce((acc, curr) => ({...acc, ...curr}), {})
+
+  console.log(defaultConfiguration);
+  
+  const [chosenConfig, setChosenConfig] = useState<ChosenConfig>(defaultConfiguration as unknown as ChosenConfig);
   const [selectedToppings, setSelectedToppings] = useState<Topping[]>([]);
 
   const handleCheckBoxCheck = (topping: Topping) => {
