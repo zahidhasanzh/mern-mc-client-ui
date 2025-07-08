@@ -36,7 +36,6 @@ const ToppingList = ({handleCheckBoxCheck, selectedToppings }: {selectedToppings
       );
       const toppings = await toppingResponse.json();
       setToppings(toppings);
-      console.log("toppings", toppings);
     };
     fetchData();
   }, []);
