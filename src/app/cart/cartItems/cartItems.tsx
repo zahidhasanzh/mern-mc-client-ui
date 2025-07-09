@@ -1,59 +1,64 @@
-"use client"
+"use client";
 
-import React, { useEffect } from 'react';
-import Link from 'next/link';
-import { useAppSelector } from '@/lib/store/hooks';
-import { ArrowRight, ShoppingCart } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import CartItem from './cartItem';
+import React, { useEffect, useMemo } from "react";
+import Link from "next/link";
+import { useAppSelector } from "@/lib/store/hooks";
+import { ArrowRight, ShoppingCart } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import CartItem from "./cartItem";
+import { getItemTotal } from "@/lib/utils";
 
 const CartItems = () => {
-    const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
 
-    const [isClient, setIsClient] = React.useState(false);
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
+  const [isClient, setIsClient] = React.useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
-    const cart = useAppSelector((state) => state.cart.cartItems);
-    if (!isClient) {
-        return null;
-    }
-    console.log(cart);
+  const cart = useAppSelector((state) => state.cart.cartItems);
+  const finalTotal = useMemo(() => {
+    return cart.reduce((acc, curr) => {
+      return acc + curr.qty * getItemTotal(curr);
+    }, 0);
+  }, [cart]);
 
-    if (!cart.length) {
-        return (
-            <div className="flex items-center gap-2">
-                <ShoppingCart />
-                <p className="text-gray-500">
-                    Your cart is empty!{' '}
-                    <Link
-                        className="text-orange-500"
-                        href={`/?restaurantId=${searchParams.get('restaurantId')}`}>
-                        continue shopping?
-                    </Link>
-                </p>
-            </div>
-        );
-    }
+  if (!isClient) {
+    return null;
+  }
 
-
+  if (!cart.length) {
     return (
-        <div className="flex flex-col gap-8 ">
-            {cart.map((cartItem) => (
-                <CartItem key={cartItem.hash}  item={cartItem} />
-            ))}
-            <div className="flex justify-between items-center">
-                <span className="font-bold text-xl">&#8377;{4000}</span>
-                <Button className='cursor-pointer'>
-                    Checkout
-                    <ArrowRight size={16} className="ml-2" />
-                </Button>
-            </div>
-        </div>
+      <div className="flex items-center gap-2">
+        <ShoppingCart />
+        <p className="text-gray-500">
+          Your cart is empty!{" "}
+          <Link
+            className="text-orange-500"
+            href={`/?restaurantId=${searchParams.get("restaurantId")}`}
+          >
+            continue shopping?
+          </Link>
+        </p>
+      </div>
     );
+  }
+
+  return (
+    <div className="flex flex-col gap-8 ">
+      {cart.map((cartItem) => (
+        <CartItem key={cartItem.hash} item={cartItem} />
+      ))}
+      <div className="flex justify-between items-center">
+        <span className="font-bold text-xl">${finalTotal}</span>
+        <Button className="cursor-pointer">
+          Checkout
+          <ArrowRight size={16} className="ml-2" />
+        </Button>
+      </div>
+    </div>
+  );
 };
 
 export default CartItems;
-
