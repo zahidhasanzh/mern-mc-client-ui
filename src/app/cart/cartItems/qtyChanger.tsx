@@ -12,7 +12,7 @@ const QtyChanger = ({ handleQtyChange, children }: IProps) => {
                 onClick={() => {
                     handleQtyChange(-1);
                 }}
-                className="w-10 h-10 rounded-full hover:bg-gray-200 flex items-center justify-center">
+                className="w-10 h-10 rounded-full cursor-pointer hover:bg-gray-200 flex items-center justify-center">
                 <Minus size={16} />
             </button>
             <div className="w-8 text-center">{children}</div>
@@ -20,7 +20,7 @@ const QtyChanger = ({ handleQtyChange, children }: IProps) => {
                 onClick={() => {
                     handleQtyChange(1);
                 }}
-                className="w-10 h-10 rounded-full hover:bg-gray-200 flex items-center justify-center">
+                className="w-10 h-10 cursor-pointer rounded-full hover:bg-gray-200 flex items-center justify-center">
                 <Plus size={16} />
             </button>
         </div>

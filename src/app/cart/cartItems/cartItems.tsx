@@ -46,7 +46,7 @@ const CartItems = () => {
             ))}
             <div className="flex justify-between items-center">
                 <span className="font-bold text-xl">&#8377;{4000}</span>
-                <Button>
+                <Button className='cursor-pointer'>
                     Checkout
                     <ArrowRight size={16} className="ml-2" />
                 </Button>

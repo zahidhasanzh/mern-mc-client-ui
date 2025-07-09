@@ -20,7 +20,7 @@ export default function Home({searchParams}: {searchParams: {restaurantId:string
             <p className="text-2xl mt-8 max-w-lg leading-snug">
               Enjoy a Free Meal if Your Order Takes More Than 45 Minutes!
             </p>
-            <Button className="mt-8 text-lg rounded-full py-7 px-6 font-bold">
+            <Button className="mt-8 text-lg rounded-full py-7 px-6 font-bold cursor-pointer">
               Get your pizza now
             </Button>
           </div>
