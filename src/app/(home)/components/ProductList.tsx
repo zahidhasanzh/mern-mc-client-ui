@@ -23,8 +23,7 @@ const ProductList = async () => {
   const categories: Category[] = await categoryResponse.json();
   const products: { data: Product[] } = await productResponse.json();
 
-  console.log(categories[0].hasTopping);
-  console.log(products)
+
 
   return (
     <section>
