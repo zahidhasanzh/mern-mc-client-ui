@@ -20,6 +20,7 @@ const CartItems = () => {
     if (!isClient) {
         return null;
     }
+    console.log(cart);
 
     if (!cart.length) {
         return (
@@ -37,10 +38,11 @@ const CartItems = () => {
         );
     }
 
+
     return (
         <div className="flex flex-col gap-8 ">
             {cart.map((cartItem) => (
-                <CartItem key={cartItem.hash} item={cartItem} />
+                <CartItem key={cartItem.hash}  item={cartItem} />
             ))}
             <div className="flex justify-between items-center">
                 <span className="font-bold text-xl">&#8377;{4000}</span>
@@ -54,3 +56,4 @@ const CartItems = () => {
 };
 
 export default CartItems;
+
