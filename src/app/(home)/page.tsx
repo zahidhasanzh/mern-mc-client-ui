@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
 
 import Image from "next/image";
-import ProductList from "./components/ProductList";
+import ProductList from "./components/product-list";
 import { Suspense } from "react";
 import ProductListSkeleton from "./components/product-list-skeleton";
 
 
-export default function Home() {
+export default function Home({searchParams}: {searchParams: {restaurantId:string}}) {
+
   return (
     <>
       <section className="bg-white">
@@ -35,7 +36,7 @@ export default function Home() {
       </section>
 
       <Suspense fallback={<ProductListSkeleton/>}>
-        <ProductList />
+        <ProductList searchParams={searchParams}/>
       </Suspense>
     </>
   );

@@ -1,16 +1,10 @@
 import React from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 import Link from "next/link";
 import { Phone } from "lucide-react";
 import { Button } from "../ui/button";
 import { Tenant } from "@/lib/types";
 import CartCounterWrapper from "./cart-counter-wrapper";
+import TenantSelect from "./tenant-select";
 
 const Header = async () => {
   const tenantsResponse = await fetch(
@@ -25,7 +19,7 @@ const Header = async () => {
     throw new Error("Failed to fetch tenants");
   }
   const restaurants: { data: Tenant[] } = await tenantsResponse.json();
-
+ 
   return (
     <header className="bg-white">
       <nav className="py-5 container flex items-center justify-between">
@@ -50,18 +44,7 @@ const Header = async () => {
             />
           </svg>
 
-          <Select>
-            <SelectTrigger className="w-[180px] focus:ring-0">
-              <SelectValue placeholder="Select Restaurant" />
-            </SelectTrigger>
-            <SelectContent>
-              {restaurants.data.map((restaurant) => (
-                <SelectItem value="restaurant.id" key={restaurant.id}>
-                  {restaurant.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+       <TenantSelect restaurants={restaurants}/>
         </div>
         <div className="flex items-center space-x-4">
           <ul className="flex items-center font-medium space-x-4">
