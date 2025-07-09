@@ -1,38 +1,19 @@
 import React, { useEffect, useState } from "react";
 import ToppingCard from "./topping-card";
 import { Topping } from "@/lib/types";
+import { useSearchParams } from "next/navigation";
 
-// const toppings = [
-//   {
-//     id: "1",
-//     name: "Chicken",
-//     image: "/chicken.png",
-//     price: 50,
-//     isAvailable: true,
-//   },
-//   {
-//     id: "2",
-//     name: "Jelapeno",
-//     image: "/Jelapeno.png",
-//     price: 50,
-//     isAvailable: true,
-//   },
-//   {
-//     id: "3",
-//     name: "Cheese",
-//     image: "/cheese.png",
-//     price: 50,
-//     isAvailable: true,
-//   },
-// ];
+
 
 const ToppingList = ({handleCheckBoxCheck, selectedToppings }: {selectedToppings: Topping[], handleCheckBoxCheck: (topping: Topping) => void }) => {
+  const searchParams = useSearchParams()
   const [toppings, setToppings] = useState<Topping[]>([]);
+
   useEffect(() => {
     const fetchData = async () => {
       const toppingResponse = await fetch( 
-        //todo: make tenantId dynamic
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/catalog/toppings?tenantId=2`
+     
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/catalog/toppings?tenantId=${searchParams.get('restaurantId')}`
       );
       const toppings = await toppingResponse.json();
       setToppings(toppings);
