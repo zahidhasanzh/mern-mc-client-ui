@@ -9,7 +9,6 @@ import { getSession } from "@/lib/session";
 
 const Header = async () => {
   const session = await getSession()
- console.log(session);
   const tenantsResponse = await fetch(
     `${process.env.BACKEND_URL}/api/auth/tenants?perPage=100`,
     {
@@ -24,7 +23,6 @@ const Header = async () => {
   const restaurants: { data: Tenant[] } = await tenantsResponse.json();
 
 
- 
   return (
     <header className="bg-white">
       <nav className="py-5 container flex items-center justify-between">
