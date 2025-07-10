@@ -1,6 +1,7 @@
+"use server"
 import { cookies } from "next/headers";
 
-interface Session {
+export interface Session {
   user: User;
 }
 interface User {

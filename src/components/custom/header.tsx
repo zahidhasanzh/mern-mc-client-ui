@@ -1,15 +1,16 @@
 import React from "react";
 import Link from "next/link";
 import { Phone } from "lucide-react";
-import { Button } from "../ui/button";
+
 import { Tenant } from "@/lib/types";
 import CartCounterWrapper from "./cart-counter-wrapper";
 import TenantSelect from "./tenant-select";
-import { getSession } from "@/lib/session";
-import Logout from "./logout";
+import UserAuthButton from "./logout";
+
+
 
 const Header = async () => {
-  const session = await getSession();
+
   const tenantsResponse = await fetch(
     `${process.env.BACKEND_URL}/api/auth/tenants?perPage=100`,
     {
@@ -67,13 +68,7 @@ const Header = async () => {
             <Phone />
             <span>+01710000000</span>
           </div>
-          {session ? (
-           <Logout/>
-          ) : (
-            <Button size={"sm"} asChild>
-              <Link href="/login">Login</Link>
-            </Button>
-          )}
+           <UserAuthButton/>
         </div>
       </nav>
     </header>
