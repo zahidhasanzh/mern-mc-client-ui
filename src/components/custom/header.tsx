@@ -6,9 +6,10 @@ import { Tenant } from "@/lib/types";
 import CartCounterWrapper from "./cart-counter-wrapper";
 import TenantSelect from "./tenant-select";
 import { getSession } from "@/lib/session";
+import Logout from "./logout";
 
 const Header = async () => {
-  const session = await getSession()
+  const session = await getSession();
   const tenantsResponse = await fetch(
     `${process.env.BACKEND_URL}/api/auth/tenants?perPage=100`,
     {
@@ -21,7 +22,6 @@ const Header = async () => {
     throw new Error("Failed to fetch tenants");
   }
   const restaurants: { data: Tenant[] } = await tenantsResponse.json();
-
 
   return (
     <header className="bg-white">
@@ -47,7 +47,7 @@ const Header = async () => {
             />
           </svg>
 
-       <TenantSelect restaurants={restaurants}/>
+          <TenantSelect restaurants={restaurants} />
         </div>
         <div className="flex items-center space-x-4">
           <ul className="flex items-center font-medium space-x-4">
@@ -67,7 +67,13 @@ const Header = async () => {
             <Phone />
             <span>+01710000000</span>
           </div>
-          <Button size={"sm"}>{session ? 'logout' : 'login'}</Button>
+          {session ? (
+           <Logout/>
+          ) : (
+            <Button size={"sm"} asChild>
+              <Link href="/login">Login</Link>
+            </Button>
+          )}
         </div>
       </nav>
     </header>
