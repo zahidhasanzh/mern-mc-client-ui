@@ -2,7 +2,9 @@
 import {parse} from "cookie";
 import { cookies } from "next/headers";
 
-export default async function login(prevState: any, formdata: FormData) {
+export default async function register(prevState: any, formdata: FormData) {
+  const firstName = formdata.get("firstName");
+  const lastName = formdata.get("lastName");
   const email = formdata.get("email");
   const password = formdata.get("password");
   // todo: do request data validation
@@ -11,13 +13,15 @@ export default async function login(prevState: any, formdata: FormData) {
 
   try {
     const response = await fetch(
-      `${process.env.BACKEND_URL}/api/auth/auth/login`,
+      `${process.env.BACKEND_URL}/api/auth/auth/register`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          firstName,
+          lastName,
           email,
           password,
         }),
@@ -75,9 +79,10 @@ export default async function login(prevState: any, formdata: FormData) {
       domain: parsedRefreshToken.Domain,
       sameSite: parsedRefreshToken.SameSite as "strict",
     });
+
     return {
       type: "success",
-      message: "Login successful!",
+      message: "Registration successful!",
     };
   } catch (err: any) {
     return {
