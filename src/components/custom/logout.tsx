@@ -7,6 +7,7 @@ import { getSession, Session } from "@/lib/session";
 import Link from "next/link";
 
 const UserAuthButton = () => {
+
   const [session, setSession] = useState<Session | null>()
   async function getSessionFunc (): Promise<void> {
      setSession( await getSession())
