@@ -5,8 +5,11 @@ import { Button } from "../ui/button";
 import { Tenant } from "@/lib/types";
 import CartCounterWrapper from "./cart-counter-wrapper";
 import TenantSelect from "./tenant-select";
+import { getSession } from "@/lib/session";
 
 const Header = async () => {
+  const session = await getSession()
+ console.log(session);
   const tenantsResponse = await fetch(
     `${process.env.BACKEND_URL}/api/auth/tenants?perPage=100`,
     {
@@ -19,6 +22,8 @@ const Header = async () => {
     throw new Error("Failed to fetch tenants");
   }
   const restaurants: { data: Tenant[] } = await tenantsResponse.json();
+
+
  
   return (
     <header className="bg-white">
@@ -64,7 +69,7 @@ const Header = async () => {
             <Phone />
             <span>+01710000000</span>
           </div>
-          <Button size={"sm"}>Logout</Button>
+          <Button size={"sm"}>{session ? 'logout' : 'login'}</Button>
         </div>
       </nav>
     </header>

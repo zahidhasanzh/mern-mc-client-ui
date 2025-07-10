@@ -4,9 +4,12 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { accessToken, refreshToken } = body;
 
+  const parsedAccessToken = accessToken;
+  const parsedRefreshToken = refreshToken
   const cookieStore = await cookies();
-  cookieStore.set("accessToken", accessToken, {
-    value: accessToken,
+  cookieStore.set({
+    name: 'accessToken',
+    value: parsedAccessToken.accessToken,
     expires: new Date(accessToken.expires),
     httpOnly: (accessToken.httpOnly as unknown as boolean) || true,
     path: accessToken.Path,
@@ -14,8 +17,9 @@ export async function POST(request: Request) {
     sameSite: accessToken.SameSite as "strict",
   });
 
-  cookieStore.set("refreshToken", refreshToken, {
-    value: refreshToken,
+  cookieStore.set({
+    name: 'refreshToken',
+    value: parsedRefreshToken.refreshToken,
     expires: new Date(refreshToken.expires),
     httpOnly: (refreshToken.httpOnly as unknown as boolean) || true,
     path: refreshToken.Path,

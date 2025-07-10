@@ -31,9 +31,7 @@ const initialState = {
 
 const Login = () => {
   const [state, formAction] = useFormState(login, initialState);
-  if(state.type === 'success'){
-    window.location.href = '/'
-  }
+ 
   useEffect(() => {
     if (state?.type === "success") {
       fetch("/api/auth/set-cookie", {
@@ -46,6 +44,7 @@ const Login = () => {
           refreshToken: state.refreshToken,
         }),
       });
+       window.location.href = '/'
     }
   }, [state]);
 
