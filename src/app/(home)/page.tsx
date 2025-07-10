@@ -1,12 +1,11 @@
-import { Button } from "@/components/ui/button";
-
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 import ProductList from "./components/product-list";
-import { Suspense } from "react";
-import ProductListSkeleton from "./components/product-list-skeleton";
 
+export default async function Home({ searchParams }: { searchParams: { restaurantId: string } }) {
 
-export default function Home({searchParams}: {searchParams: {restaurantId:string}}) {
+  const params = await searchParams; 
+  const restaurantId = params.restaurantId || "";
 
   return (
     <>
@@ -35,9 +34,7 @@ export default function Home({searchParams}: {searchParams: {restaurantId:string
         </div>
       </section>
 
-      <Suspense fallback={<ProductListSkeleton/>}>
-        <ProductList searchParams={searchParams}/>
-      </Suspense>
+      <ProductList restaurantId={restaurantId} />
     </>
   );
 }

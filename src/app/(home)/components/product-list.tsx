@@ -1,16 +1,18 @@
+
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Category, Product } from "@/lib/types";
 import ProductCard from "./product-card";
 
-const ProductList = async ({searchParams}: {searchParams: {restaurantId: string}}) => {
+const ProductList = async ({ restaurantId }: { restaurantId: string }) => {
+  if (!restaurantId) return <p>No restaurant selected</p>;
 
-   const [categoryResponse, productResponse] = await Promise.all([
-    fetch(`${process.env.BACKEND_URL}/api/catalog/categories`, {
+  const [categoryResponse, productResponse] = await Promise.all([
+   await fetch(`${process.env.BACKEND_URL}/api/catalog/categories`, {
       next: { revalidate: 3600 },
     }),
-    fetch(
-      `${process.env.BACKEND_URL}/api/catalog/products?Perpage=100&tenantId=${searchParams.restaurantId}`,
+   await fetch(
+      `${process.env.BACKEND_URL}/api/catalog/products?Perpage=100&tenantId=${restaurantId}`,
       {
         next: { revalidate: 3600 },
       }
@@ -23,8 +25,6 @@ const ProductList = async ({searchParams}: {searchParams: {restaurantId: string}
 
   const categories: Category[] = await categoryResponse.json();
   const products: { data: Product[] } = await productResponse.json();
-
-
 
   return (
     <section>
