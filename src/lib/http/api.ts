@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios from "axios";
 
 export const api = axios.create({
-  baseURL: process .env.NEXT_PUBLIC_BACKEND_URL,
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -9,5 +9,9 @@ export const api = axios.create({
   },
 });
 
-const ORDER_SERVICE_PREFIX = '/api/order';
+const ORDER_SERVICE_PREFIX = "/api/order";
 export const getCustomer = () => api.get(`${ORDER_SERVICE_PREFIX}/customer`);
+export const addAddress = (customerId: string, address: string) =>
+  api.patch(`${ORDER_SERVICE_PREFIX}/customer/addresses/${customerId}`, {
+    address,
+  });
