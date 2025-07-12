@@ -30,7 +30,7 @@ const formSchema = z.object({
     message: "Address must be at least 2 characters.",
   }),
 });
-const AddAddress = ({ customerId }: { customerId: string }) => {
+const AddAddress = ({ customerId }: { customerId: string | undefined}) => {
   const [isModelOpen, setIsModelOpen] = useState(false);
   const addressForm = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,6 +40,7 @@ const AddAddress = ({ customerId }: { customerId: string }) => {
   const { mutate, isPending } = useMutation({
     mutationKey: ["address", customerId],
     mutationFn: async (address: string) => {
+      if (!customerId) return; 
       return await addAddress(customerId, address);
     },
     onSuccess: () => {
