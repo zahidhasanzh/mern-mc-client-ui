@@ -35,7 +35,7 @@ const initialState = {
 
 const Login = () => {
     const searchParams = useSearchParams();
-    const returnTo = searchParams.get('return-to');
+    const returnTo = searchParams.get('return-to'); 
 
     const [state, formAction] = useFormState(login, initialState);
 
