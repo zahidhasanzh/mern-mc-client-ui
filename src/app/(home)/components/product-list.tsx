@@ -6,7 +6,6 @@ import ProductCard from "./product-card";
 
 const ProductList = async ({ restaurantId }: { restaurantId: string }) => {
 
-
   const [categoryResponse, productResponse] = await Promise.all([
    await fetch(`${process.env.BACKEND_URL}/api/catalog/categories`, {
       next: { revalidate: 3600 },
