@@ -30,7 +30,7 @@ const formSchema = z.object({
     message: "Address must be at least 2 characters.",
   }),
 });
-const AddAddress = ({ customerId }: { customerId: string | undefined}) => {
+const AddAddress = ({ customerId }: { customerId: string | undefined }) => {
   const [isModelOpen, setIsModelOpen] = useState(false);
   const addressForm = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,7 +40,7 @@ const AddAddress = ({ customerId }: { customerId: string | undefined}) => {
   const { mutate, isPending } = useMutation({
     mutationKey: ["address", customerId],
     mutationFn: async (address: string) => {
-      if (!customerId) return; 
+      if (!customerId) return;
       return await addAddress(customerId, address);
     },
     onSuccess: () => {
@@ -50,10 +50,13 @@ const AddAddress = ({ customerId }: { customerId: string | undefined}) => {
     },
   });
 
-  const handleAddressAdd = (data: z.infer<typeof formSchema>) => {
-    console.log("data", data);
-    mutate(data.address);
+  const handleAddressAdd = (e: React.FormEvent<HTMLFormElement>) => {
+    e.stopPropagation();
+   return addressForm.handleSubmit((data: z.infer<typeof formSchema>) => {
+      mutate(data.address);
+    })(e)
   };
+
   return (
     <Dialog open={isModelOpen} onOpenChange={setIsModelOpen}>
       <DialogTrigger asChild>
@@ -65,7 +68,7 @@ const AddAddress = ({ customerId }: { customerId: string | undefined}) => {
 
       <DialogContent className="sm:max-w-[425px]">
         <Form {...addressForm}>
-          <form onSubmit={addressForm.handleSubmit(handleAddressAdd)}>
+          <form onSubmit={handleAddressAdd}>
             <DialogHeader>
               <DialogTitle>Add Address</DialogTitle>
               <DialogDescription>
@@ -90,7 +93,11 @@ const AddAddress = ({ customerId }: { customerId: string | undefined}) => {
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit" disabled={isPending} className="cursor-pointer">
+              <Button
+                type="submit"
+                disabled={isPending}
+                className="cursor-pointer"
+              >
                 {isPending ? (
                   <span className="flex items-center gap-2">
                     <LoaderCircle className="animate-spin" />
