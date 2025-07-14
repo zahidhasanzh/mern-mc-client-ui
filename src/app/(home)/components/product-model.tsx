@@ -43,7 +43,8 @@ const ProductModel = ({ product }: { product: Product }) => {
 
     const configPricing = Object.entries(chosenConfig).reduce(
       (acc, [key, value]: [string, string]) => {
-        const price = product.priceConfiguration[key].availableOptions[value];
+        const price = product.category.priceConfiguration[key]?.availableOptions?.[value] || 0;
+
         return acc + price;
       },
       0
