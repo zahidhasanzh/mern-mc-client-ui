@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import CryptoJs from "crypto-js";
 import { CartItem } from "./store/features/cart/cartSlice";
 import { Product } from "./types";
-import { useMemo } from "react";
+
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
