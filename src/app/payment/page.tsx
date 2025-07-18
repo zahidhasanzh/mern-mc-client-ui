@@ -15,11 +15,9 @@ import React from "react";
 const Payment = ({
   searchParams,
 }: {
-  searchParams: { success: string; orderId: string };
+  searchParams: { success: string; orderId: string; restaurantId: string };
 }) => {
-  {
-    /* get tenantId from redirect url, add it on backend */
-  }
+ 
   const isOrderSuccess = searchParams.success === "true";
 
   return (
@@ -82,7 +80,7 @@ const Payment = ({
       {isOrderSuccess ? (
         <Button asChild className="mt-6">
           <Link
-            href={`/order-status/${searchParams.orderId}`}
+            href={`/order-status/${searchParams.orderId}?restaurantId=${searchParams.restaurantId}`}
             className="flex items-center gap-2"
           >
             <ArrowLeft size={20} className="text-white" />
@@ -91,8 +89,8 @@ const Payment = ({
         </Button>
       ) : (
         <Button asChild className="mt-6">
-          {/* get tenantid from redirect url, add it on backend */}
-          <Link href="/checkout" className="flex items-center gap-2">
+      
+          <Link href={`/checkout?restaurantId=${searchParams.restaurantId}`} className="flex items-center gap-2">
             <ArrowLeft size={20} className="text-white" />
             <span>Go to checkout</span>
           </Link>
