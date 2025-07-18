@@ -31,7 +31,9 @@ const Orders = async () => {
   if (!response.ok) {
     throw new Error("Error fetching my order");
   }
-  const orders = await response.json();
+   const orders = await response.json() || [];
+
+
   return (
     <div className="container mt-8">
       <Card>
@@ -40,39 +42,48 @@ const Orders = async () => {
           <CardDescription>My complete order history.</CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">ID</TableHead>
-                <TableHead>Payment Status</TableHead>
-                <TableHead>Payment Method</TableHead>
-                <TableHead>Date Time</TableHead>
-                <TableHead>Order Status</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead className="text-right">Details</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {orders.map((order: Order) => (
-                <TableRow key={order._id}>
-                  <TableCell className="font-medium">{order._id}</TableCell>
-                  <TableCell>{order.paymentStatus.toUpperCase()}</TableCell>
-                  <TableCell>{order.paymentMode}</TableCell>
-                  <TableCell>{order.createdAt}</TableCell>
-                  <TableCell>
-                    <Badge variant={"outline"}>{order.orderStatus.toUpperCase()}</Badge>
-                  </TableCell>
-                  {/* make sure total is grand total */}
-                  <TableCell>${order.total}</TableCell>
-                  <TableCell className="text-right">
-                    <Link href={`/order/${order._id}`} className="underline text-primary">
-                      More details
-                    </Link>
-                  </TableCell>
+          {orders.length === 0 ? (
+            "No orders yet."
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">ID</TableHead>
+                  <TableHead>Payment Status</TableHead>
+                  <TableHead>Payment Method</TableHead>
+                  <TableHead>Date Time</TableHead>
+                  <TableHead>Order Status</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead className="text-right">Details</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {orders.map((order: Order) => (
+                  <TableRow key={order._id}>
+                    <TableCell className="font-medium">{order._id}</TableCell>
+                    <TableCell>{order.paymentStatus.toUpperCase()}</TableCell>
+                    <TableCell>{order.paymentMode}</TableCell>
+                    <TableCell>{order.createdAt}</TableCell>
+                    <TableCell>
+                      <Badge variant={"outline"}>
+                        {order.orderStatus.toUpperCase()}
+                      </Badge>
+                    </TableCell>
+                    {/* make sure total is grand total */}
+                    <TableCell>${order.total}</TableCell>
+                    <TableCell className="text-right">
+                      <Link
+                        href={`/order/${order._id}`}
+                        className="underline text-primary"
+                      >
+                        More details
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
         </CardContent>
       </Card>
     </div>
