@@ -14,7 +14,13 @@ import React, { useMemo, useRef, useState } from "react";
 const TAXES_PERCENTAGE = 15;
 const DELIVERY_CHARGES = 2;
 
-const OrderSumary = ({handleCouponCodeChange}: {handleCouponCodeChange: (code:string) => void}) => {
+const OrderSumary = ({
+  isPlaceOrderPending,
+  handleCouponCodeChange,
+}: {
+  isPlaceOrderPending:boolean;
+  handleCouponCodeChange: (code: string) => void;
+}) => {
   const searchParam = useSearchParams();
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [discountError, setDiscountError] = useState("");
@@ -45,7 +51,7 @@ const OrderSumary = ({handleCouponCodeChange}: {handleCouponCodeChange: (code:st
     return subTotal + taxesAmount + DELIVERY_CHARGES;
   }, [subTotal, taxesAmount, DELIVERY_CHARGES]);
 
-  const { mutate, isPending} = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["couponCode"],
     mutationFn: async () => {
       if (!couponCodeRef.current) {
@@ -64,12 +70,14 @@ const OrderSumary = ({handleCouponCodeChange}: {handleCouponCodeChange: (code:st
     onSuccess: (data) => {
       if (data.valid) {
         setDiscountError("");
-        handleCouponCodeChange(couponCodeRef.current ? couponCodeRef.current.value : '')
+        handleCouponCodeChange(
+          couponCodeRef.current ? couponCodeRef.current.value : ""
+        );
         setDiscountPercentage(data.discount);
         return;
       }
       setDiscountError("Coupon is invalid");
-      handleCouponCodeChange("")
+      handleCouponCodeChange("");
       setDiscountPercentage(0);
     },
     onError: (error: AxiosError<{ errors: { msg: string }[] }>) => {
@@ -154,7 +162,16 @@ const OrderSumary = ({handleCouponCodeChange}: {handleCouponCodeChange: (code:st
         </div>
 
         <div className="text-right mt-6">
-          <Button className="cursor-pointer">Place order</Button>
+          <Button disabled={isPlaceOrderPending} className="cursor-pointer">
+            {isPlaceOrderPending ? (
+              <span className="flex items-center gap-2">
+                <LoaderCircle className="animate-spin" />
+                <span>Please wait</span>
+              </span>
+            ) : (
+              <span>Place order</span>
+            )}
+          </Button>
         </div>
       </CardContent>
     </Card>
