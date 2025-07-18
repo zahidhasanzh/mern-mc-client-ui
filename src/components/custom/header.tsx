@@ -60,7 +60,7 @@ const Header = async () => {
               </Link>
             </li>
             <li>
-              <Link href={"/"} className="hover:text-primary">
+              <Link href={"/orders"} className="hover:text-primary">
                 Orders
               </Link>
             </li>
