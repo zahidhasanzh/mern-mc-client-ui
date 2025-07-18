@@ -55,16 +55,25 @@ const CustomerForm = () => {
 
   const { mutate, isPending: isPlaceOrderPending } = useMutation({
     mutationKey: ["order"],
-    mutationFn: async (data: OrderData) => {
+     mutationFn: async (data: OrderData) => {
       console.log("Calling mutationFN....");
 
       const idempotencyKey = idempotencyKeyRef.current
         ? idempotencyKeyRef.current
         : (idempotencyKeyRef.current = uuidv4() + customer?._id);
 
-      await createOrder(data, idempotencyKey);
+     return await createOrder(data, idempotencyKey).then(res => res.data);
     },
     retry: 3,
+    onSuccess: (data: {paymentUrl: string | null}) => {
+      if(data.paymentUrl){
+        window.location.href = data.paymentUrl
+      }
+
+      alert("Order placed successfully!")
+      //todo: this will happen if payment mode is cash.
+      //todo: 1.clear the cart 2. redirect the user to order status page
+    }
   });
 
   if (isLoading) {
