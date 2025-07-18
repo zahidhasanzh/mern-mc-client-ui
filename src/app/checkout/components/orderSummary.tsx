@@ -13,7 +13,8 @@ import React, { useMemo, useRef, useState } from "react";
 
 const TAXES_PERCENTAGE = 15;
 const DELIVERY_CHARGES = 2;
-const OrderSumary = () => {
+
+const OrderSumary = ({handleCouponCodeChange}: {handleCouponCodeChange: (code:string) => void}) => {
   const searchParam = useSearchParams();
   const [discountPercentage, setDiscountPercentage] = useState(0);
   const [discountError, setDiscountError] = useState("");
@@ -63,10 +64,12 @@ const OrderSumary = () => {
     onSuccess: (data) => {
       if (data.valid) {
         setDiscountError("");
+        handleCouponCodeChange(couponCodeRef.current ? couponCodeRef.current.value : '')
         setDiscountPercentage(data.discount);
         return;
       }
       setDiscountError("Coupon is invalid");
+      handleCouponCodeChange("")
       setDiscountPercentage(0);
     },
     onError: (error: AxiosError<{ errors: { msg: string }[] }>) => {
