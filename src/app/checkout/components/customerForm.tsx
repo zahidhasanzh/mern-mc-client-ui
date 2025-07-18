@@ -23,8 +23,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import OrderSumary from "./orderSummary";
-import { useAppSelector } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { useSearchParams } from "next/navigation";
+import { clearCart } from "@/lib/store/features/cart/cartSlice";
 
 const formSchema = z.object({
   address: z.string({ error: "Please select an address." }),
@@ -35,6 +36,7 @@ const formSchema = z.object({
 });
 
 const CustomerForm = () => {
+  const dispatch = useAppDispatch()
   const customerForm = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -71,6 +73,7 @@ const CustomerForm = () => {
       }
 
       alert("Order placed successfully!")
+      dispatch(clearCart())
       //todo: this will happen if payment mode is cash.
       //todo: 1.clear the cart 2. redirect the user to order status page
     }
