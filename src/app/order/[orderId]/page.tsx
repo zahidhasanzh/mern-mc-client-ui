@@ -14,8 +14,9 @@ import { cookies } from "next/headers";
 import { Order } from "@/lib/types";
 
 const SingleOrder = async ({ params }: { params: { orderId: string } }) => {
+  const paramsData = await params
   const response = await fetch(
-    `${process.env.BACKEND_URL}/api/order/orders/${params.orderId}?fields=address,paymentStatus,paymentMode`,
+    `${process.env.BACKEND_URL}/api/order/orders/${paramsData.orderId}?fields=address,paymentStatus,paymentMode`,
     {
       headers: {
         Authorization: `Bearer ${(await cookies()).get("accessToken")?.value}`,
@@ -38,7 +39,7 @@ const SingleOrder = async ({ params }: { params: { orderId: string } }) => {
         </CardHeader>
 
         <CardContent>
-          <OrderStatus />
+          <OrderStatus orderId={order._id}/>
         </CardContent>
       </Card>
 
