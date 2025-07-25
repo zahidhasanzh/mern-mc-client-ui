@@ -14,7 +14,6 @@ export async function POST() {
   );
 
   if (!response.ok) {
-    console.log("Refresh failed 1");
     return Response.json({ success: false });
   }
 
@@ -23,7 +22,6 @@ export async function POST() {
   const refreshToken = c.find((cookie) => cookie.includes("refreshToken"));
 
   if (!accessToken || !refreshToken) {
-    console.log("Tokens could not found");
     return Response.json({ success: false });
   }
 

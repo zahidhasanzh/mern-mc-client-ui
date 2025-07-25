@@ -16,7 +16,6 @@ const TenantSelect = ({ restaurants }: { restaurants: { data: Tenant[] } }) => {
 
 
   const handleValueChange = (value: string) => {
-    console.log("value", value);
     router.push(`/?restaurantId=${value}`);
   };
   return (
